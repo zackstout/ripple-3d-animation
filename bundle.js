@@ -1,5 +1,4 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-
 var THREE = require('three');
 var OrbitControls = require('three-orbit-controls')(THREE);
 
@@ -10,6 +9,8 @@ pos.x = -20;
 var color = new THREE.Color("rgb(100, 50, 30)");
 var color2 = new THREE.Color("rgb(0, 0, 255)");
 var geometry, cube;
+var material = new THREE.MeshLambertMaterial( { color: color } );
+
 var material2 = new THREE.MeshLambertMaterial( { color: color2 } );
 
 var scene = new THREE.Scene();
@@ -22,22 +23,8 @@ document.body.appendChild( renderer.domElement );
 // camera.position.z = 45;
 camera.position.y = 10;
 camera.position.x = 5;
-// camera.rotation.x = Math.PI / 2;
-
-for (var i=0; i < 20; i++) {
-  pos.z = -10;
-  for (var j=0; j < 20; j++) {
-    geometry = new THREE.BoxGeometry(1, 3, 1);
-    cube = new THREE.Mesh( geometry, material2 );
-    cube.position.copy( pos );
-    cube.receiveShadow = true;
-    cube.castShadow = true;
-    scene.add( cube );
-    pos.z += 1.1;
-  }
-  pos.x += 1.1;
-}
-
+// var offset = 0;
+var t = 0;
 
 var controls = new OrbitControls( camera );
 controls.target.set( 0, 2, 0 );
@@ -47,10 +34,95 @@ var light = new THREE.PointLight(0xffffff);
 light.position.set(5,10,5);
 scene.add(light);
 
-function animate() {
-  requestAnimationFrame( animate );
-  renderer.render( scene, camera );
+for (var i=0; i < 21; i++) {
+  pos.z = -10;
+  for (var j=0; j < 21; j++) {
+
+    var offset = Math.pow(Math.pow(i - 10, 2) + Math.pow(j - 10, 2), 0.5) / 1.5;
+    var height = 2 * Math.sin(t + offset) + 2;
+    // geometry = new THREE.BoxGeometry(1, 2 + 2* Math.sin(t + offset), 1);
+    geometry = new THREE.BoxGeometry(1, height, 1);
+
+    if (i == 10 && j == 10) {
+      cube = new THREE.Mesh( geometry, material );
+      // console.log('yay', pos);
+      // center is (-9, 0, 1)
+    } else {
+      cube = new THREE.Mesh( geometry, material2 );
+
+    }
+    cube.position.copy( pos );
+    cube.receiveShadow = true;
+    cube.castShadow = true;
+
+    scene.add( cube );
+    pos.z += 1.1;
+  }
+  // pos.z = -10;
+  pos.x += 1.1;
+  // offset += 0.37;
 }
+
+
+
+// function animate() {
+//   requestAnimationFrame( animate );
+//   renderer.render( scene, camera );
+// }
+
+
+var animate = function () {
+  setTimeout( function() {
+    while(scene.children.length > 0){
+      scene.remove(scene.children[0]);
+    }
+
+    var controls = new OrbitControls( camera );
+    controls.target.set( 0, 2, 0 );
+    controls.update();
+
+    var light = new THREE.PointLight(0xffffff);
+    light.position.set(5,10,5);
+    scene.add(light);
+
+
+    pos.x = -20;
+    for (var i=0; i < 21; i++) {
+      pos.z = -10;
+      for (var j=0; j < 21; j++) {
+
+        var offset = Math.pow(Math.pow(i - 10, 2) + Math.pow(j - 10, 2), 0.5) / 1.5;
+        var height = 2 * Math.sin(t + offset) + 2;
+        // geometry = new THREE.BoxGeometry(1, 2 + 2* Math.sin(t + offset), 1);
+        geometry = new THREE.BoxGeometry(1, height, 1);
+
+        if (i == 10 && j == 10) {
+          cube = new THREE.Mesh( geometry, material );
+          // console.log('yay', pos);
+          // center is (-9, 0, 1)
+        } else {
+          cube = new THREE.Mesh( geometry, material2 );
+
+        }
+        cube.position.copy( pos );
+        cube.receiveShadow = true;
+        cube.castShadow = true;
+
+        scene.add( cube );
+        pos.z += 1.1;
+      }
+      // pos.z = -10;
+      pos.x += 1.1;
+      // offset += 0.37;
+    }
+
+    t += 0.2;
+
+    requestAnimationFrame( animate );
+
+  }, 200 );  renderer.render(scene, camera);
+
+};
 
 animate();
 
