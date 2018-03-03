@@ -6,4 +6,4 @@ An exercise in 3d-rendering: animation a ripple or wave effect through a pool of
 - Browserify
 
 
-![](https://giphy.com/gifs/2A4bR8s4F2mix5dK48)
+![hi there](https://media.giphy.com/media/1X7cZ5deruYodzaHKy/giphy.gif)
