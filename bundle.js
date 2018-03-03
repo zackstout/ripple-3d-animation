@@ -120,7 +120,7 @@ var animate = function () {
 
     requestAnimationFrame( animate );
 
-  }, 200 );  renderer.render(scene, camera);
+  }, 50 );  renderer.render(scene, camera);
 
 };
 
