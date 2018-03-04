@@ -6,7 +6,7 @@ An exercise in 3d-rendering: animation a ripple or wave effect through a pool of
 - Browserify
 
 ## Animation:
-![hi there](https://media.giphy.com/media/1X7cZ5deruYodzaHKy/giphy.gif)
+![hi there](https://media.giphy.com/media/vcBcd4qJW5W53ueGFq/giphy.gif)
 
 ## Next Steps:
-- [ ] Figure out how to make it more efficient, so it's not running a double for loop with every animation frame.
+- [x] Figure out how to make it more efficient, so it's not running a double for loop with every animation frame. Just set height instead of destroying and recreating every box every frame.
