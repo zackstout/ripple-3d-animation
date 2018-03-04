@@ -6,7 +6,8 @@ var pos = new THREE.Vector3();
 pos.z = -10;
 pos.x = -20;
 var color = new THREE.Color("rgb(100, 50, 30)");
-var color2 = new THREE.Color("rgb(0, 0, 255)");
+// var color2 = new THREE.Color("rgb(0, 0, 255)");
+var color2 = new THREE.Color("rgb(255, 0, 0)");
 var geometry, cube;
 var material = new THREE.MeshLambertMaterial( { color: color } );
 var rects = [];
@@ -39,9 +40,10 @@ for (var i=0; i < 21; i++) {
   for (var j=0; j < 21; j++) {
 
     var offset = Math.pow(Math.pow(i - 10, 2) + Math.pow(j - 10, 2), 0.5) / 1.5;
+
     var height = 2 * Math.sin(t + offset) + 2;
     // geometry = new THREE.BoxGeometry(1, 2 + 2* Math.sin(t + offset), 1);
-    geometry = new THREE.BoxGeometry(1, height, 1);
+    geometry = new THREE.BoxGeometry(1, 2, 1);
 
     if (i == 10 && j == 10) {
       cube = new THREE.Mesh( geometry, material );
@@ -54,6 +56,10 @@ for (var i=0; i < 21; i++) {
     cube.position.copy( pos );
     cube.receiveShadow = true;
     cube.castShadow = true;
+
+    cube.scale.y = height;
+
+    cube.offset = offset;
 
     rects.push(cube);
     scene.add(cube);
@@ -83,7 +89,11 @@ var animate = function () {
     // while(scene.children.length > 0){
     //   scene.remove(scene.children[0]);
     // }
+    rects.forEach(function(rect) {
+      var height = 2 * Math.sin(t + rect.offset) + 2;
 
+      rect.scale.y = height;
+    });
     // var controls = new OrbitControls( camera );
     // controls.target.set( 0, 2, 0 );
     // controls.update();
@@ -94,7 +104,7 @@ var animate = function () {
     // rects.forEach(function(rec) {
     //   rec.geometry.parameters.height = 1;
     // });
-
+    t += 0.2;
     // pos.x = -20;
     // for (var i=0; i < 21; i++) {
     //   pos.z = -10;
